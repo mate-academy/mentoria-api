@@ -2,10 +2,18 @@ export interface User {
   id: number;
   email: string;
   username: string;
+  mentorSlug?: string;
+  hourlyRatePln?: number;
 }
 
 const SEED_USERS: User[] = [
-  { id: 1, email: "john@example.com", username: "John_Doe" },
+  {
+    id: 1,
+    email: "john@example.com",
+    username: "John_Doe",
+    mentorSlug: "john-doe",
+    hourlyRatePln: 200,
+  },
   { id: 2, email: "kasia@example.com", username: "kasia_w" },
 ];
 
@@ -18,6 +26,10 @@ export const userRepository = {
 
   findByUsername(username: string): User | undefined {
     return users.find((u) => u.username === username);
+  },
+
+  findByMentorSlug(mentorSlug: string): User | undefined {
+    return users.find((u) => u.mentorSlug === mentorSlug);
   },
 
   create(data: Omit<User, "id">): User {
