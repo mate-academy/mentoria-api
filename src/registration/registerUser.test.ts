@@ -36,4 +36,47 @@ describe("registerUser", () => {
       "Email already registered",
     );
   });
+
+  it("registers a mentor with valid mentorSlug and hourlyRatePln", () => {
+    const mentor = registerUser({
+      ...validInput,
+      mentorSlug: "kasia-mentor",
+      hourlyRatePln: 250,
+    });
+
+    expect(mentor).toMatchObject({
+      email: "new.user@example.com",
+      mentorSlug: "kasia-mentor",
+      hourlyRatePln: 250,
+    });
+  });
+
+  it("rejects mentor registration when hourlyRatePln is missing", () => {
+    expect(() =>
+      registerUser({
+        ...validInput,
+        mentorSlug: "valid-slug",
+      }),
+    ).toThrow("Please check the highlighted fields");
+  });
+
+  it("rejects mentor registration with reserved slug or invalid hourly rate", () => {
+    expect(() =>
+      registerUser({
+        ...validInput,
+        mentorSlug: "admin",
+        hourlyRatePln: 2500,
+      }),
+    ).toThrow();
+  });
+
+  it("rejects a mentor slug that is already taken", () => {
+    expect(() =>
+      registerUser({
+        ...validInput,
+        mentorSlug: "john-doe",
+        hourlyRatePln: 200,
+      }),
+    ).toThrow("Mentor slug already taken");
+  });
 });
